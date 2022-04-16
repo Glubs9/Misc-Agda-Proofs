@@ -12,6 +12,8 @@ natrec p h (succ n) = h n (natrec p h n)
 data _==_ {A : Set} : A -> A -> Set where
     refl : (a : A) -> a == a
 
+data _===_ {A : Set} : A -> A -> Set where
+    refl' : {a : A} -> a === a
 
 cong : {a b : Set} (f : a -> b) {x y : a} -> x == y -> f x == f y
 cong f (refl a) = refl (f a)
@@ -56,10 +58,43 @@ assoc zero b c = refl (b + c)
 assoc (succ a) b c = cong succ (assoc a b c)
 -- how tf does this worK????? but fuck it i'm just gonna keep grooving
 
+comm-zero : (m : Nat) -> (m + zero) == m
+comm-zero zero = refl zero
+comm-zero (succ m) = eq-succ (comm-zero m)
+
+trans-eq : {A : Set} {a b : A} -> a == b -> b == a
+trans-eq (refl a) = refl a
+
+-- using second refl as it makes proofs easier somehow?
+refl-equiv : {A : Set} {a b : A} -> a === b -> a == b
+refl-equiv {a = a} refl' = refl a
+
+comm-succ : (m n : Nat) -> (m + (succ n)) == (succ (m + n))
+comm-succ zero n     = refl-equiv refl'
+comm-succ (succ m) n = cong succ (comm-succ m n)
+
+eq-trans : {n m r : Nat} -> n == m -> m == r -> n == r
+eq-trans (refl a) (refl b) = refl a
+
+eq-comm : {A : Set} {a b : A} -> a == b -> b == a
+eq-comm (refl a) = refl a
+
+-- fuck you agda tutorial!, no need for rewriting rules here baby!
+-- probably should learn that stuff later, but not right now! low level or nothing 
+comm : (m n : Nat) -> (m + n) == (n + m)
+comm m zero     = comm-zero m
+comm m (succ n) = eq-trans comm-scall comm-rec-succ
+  where comm-rec = comm m n
+        comm-rec-succ = cong succ comm-rec
+        comm-scall = comm-succ m n
+
+{-
 comm : (a b : Nat) -> (a + b) == (b + a)
-comm zero zero         = refl (zero)
+comm zero b = refl (b)
 comm zero (succ a)     = eq-succ (comm zero a) -- same shit here, whats going on?
 comm (succ a) zero     = eq-succ (comm a zero)
-comm (succ a) b = eq-succ (comm a b)
+comm (succ a) (succ b) = cong succ (comm a b)
+-- comm (succ a) b = eq-succ (comm a b)
+-}
 
 -- fuck. i'm too tired for this shit
