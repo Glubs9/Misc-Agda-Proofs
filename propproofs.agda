@@ -71,8 +71,18 @@ contraif f f' p = f' (f p)
 -- why does nobody mention this? like cause everybody says "don't do it" cause it's a consequence, but it's really only one direction.
 -- we might be able to prove more if we had both? idk check for unsolved problems or something i guess
 
--- doubleNeg : p -> ((p -> false) -> false)
--- doubleNeg p = LEM
+false-elim : {p : Set} -> false -> p
+false-elim ()
+
+doubleNegElim' : {p : Set} ->  p + (p -> false) -> ((p -> false) -> false) -> p
+doubleNegElim' (inl p)  _ = p
+doubleNegElim' (inr pf) f = false-elim (f pf)
+
+doubleNegElim : {p : Set} -> ((p -> false) -> false) -> p
+doubleNegElim = doubleNegElim' LEM
+
+doubleNegIntro : {p : Set} -> p -> ((p -> false) -> false)
+doubleNegIntro p f = f p -- you're kidding me. how did I not see this ???????????????
 
 -- check on the proofs that talk about the consequences and see if they fail under the understanding that we can get it one way.
 -- like how funny would that be. i doubt it but either way it's a fun exercise :)
@@ -99,5 +109,5 @@ demorgansCase f (inl p) (inl q) = inl (\{_ -> f < p , q >})
 demorgansCase _ (inr pf) _      = inl pf
 demorgansCase _ _ (inr qf)      = inr qf
 
-demorgans : {p q : Set} -> ((p & q) -> false) -> ((p -> false) + (q -> false))
-demorgans f = {!!} LEM LEM -- demorgansCase LEM LEM
+-- demorgans : {p q : Set} -> ((p & q) -> false) -> ((p -> false) + (q -> false))
+-- demorgans f = {!!} LEM LEM -- demorgansCase LEM LEM
