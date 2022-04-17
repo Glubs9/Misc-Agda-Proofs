@@ -26,3 +26,5 @@ a = a
 
 -- does it actually type check is the real question?  agda runs forever on this
 -- i mean it does type check when you do it by hand, i guess the computational verification doesn't work
+
+-- edit: actually, looking at it again, i'm not sure this type checks by hand? Like I was very tired when I wrote this. It makes sense to some extent. but at the same time it's like, ehhhhhhhhhhhh
