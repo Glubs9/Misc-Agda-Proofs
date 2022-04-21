@@ -57,3 +57,16 @@ ind-unit C c * = c
 
 uniq-unit : (x : unit) -> * == x
 uniq-unit * = ind-unit (\{x -> * == x}) refl *
+
+
+
+data Sigma (A : Set) (B : A -> Set) : Set where
+    _,_ : (a : A) -> B a -> Sigma A B
+
+proj1 : {A : Set} {B : A -> Set} -> Sigma A B -> A
+proj1 (a , b) = a
+
+proj2 : {A : Set} {B : A -> Set} -> (p : Sigma A B) -> B (proj1 p)
+proj2 (a , b) = b
+
+rec-sigma : {n m : Level} {A : Set n} {B : A -> Set m} -> (C : Set m) -> 
