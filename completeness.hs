@@ -27,6 +27,7 @@ module Completeness where
 -- first we do lambda calculus, which we do by writing ski calculus
 
 import Data.Bifunctor
+import Control.Monad
 
 i :: a -> a
 i = head . (: [])
@@ -36,9 +37,19 @@ k :: a -> b -> a
 k = curry fst
 
 s :: (a -> b -> c) -> (a -> b) -> a -> c
-s x y z = out
+s x y z = undefined
     where fs = (x, y)
           -- f = \f -> f z -- cannot construct the infinite type?
           f = ($ z)
           fs' = bimap f f fs -- something like double or duplicate or something
-          out = fst fs' (snd fs') -- this is the same fucking equation lmao
+          --out = foldr1 ($) (x z, y z)
+          -- out = fst fs' (snd fs') -- this is the same fucking equation lmao
+          xD = uncurry ($) (x z, y z)
+          -- something like curry $ join bimap ($z)
+          -- wtf does that even mean?
+          -- benis = curry $ join bimap ($ z)
+          -- benis = join bimap ($ z)
+          -- uwu = (uncurry ($)) . join bimap
+          -- uwu = uncurry ($) . (curry (join bimap))
+          -- uwu = uncurry ($) . _ (join bimap $) fucking hell something
+          -- like that or whatever
