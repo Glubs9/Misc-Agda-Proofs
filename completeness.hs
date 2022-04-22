@@ -53,3 +53,5 @@ s x y z = undefined --uncurry ($) . _
           -- uwu = uncurry ($) . (curry (join bimap))
           -- uwu = uncurry ($) . _ (join bimap $) fucking hell something
           -- like that or whatever
+
+iota 
