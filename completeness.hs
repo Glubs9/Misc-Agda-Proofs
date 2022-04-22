@@ -37,14 +37,14 @@ k :: a -> b -> a
 k = curry fst
 
 s :: (a -> b -> c) -> (a -> b) -> a -> c
-s x y z = undefined
-    where fs = (x, y)
+s x y z = undefined --uncurry ($) . _
+    where --fs = (x, y) -- x y z are args
           -- f = \f -> f z -- cannot construct the infinite type?
-          f = ($ z)
-          fs' = bimap f f fs -- something like double or duplicate or something
+          -- f = flip ($)
+          --fs' = bimap f f fs -- something like double or duplicate or something
           --out = foldr1 ($) (x z, y z)
           -- out = fst fs' (snd fs') -- this is the same fucking equation lmao
-          xD = uncurry ($) (x z, y z)
+          --xD = uncurry ($) (x z, y z)
           -- something like curry $ join bimap ($z)
           -- wtf does that even mean?
           -- benis = curry $ join bimap ($ z)
